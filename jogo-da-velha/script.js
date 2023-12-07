@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < array.length; i++) {
             if (array[i] === currentPlayer) {
                 count++;
-                if (count === 3) {
+                if (count === boardSize) { // Alteração aqui para verificar se há sequência do tamanho da linha/coluna
                     return true;
                 }
             } else {
