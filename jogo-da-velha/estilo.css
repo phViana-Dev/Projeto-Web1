@@ -71,15 +71,8 @@ label {
     background-color: #ffc107;
 }
 
-#jogador-atual {
-    padding-top: 5px;
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #ffc107;
-}
-
 #botao-reiniciar {
-    margin-top: 10px; /* Ajuste a margem superior conforme necessário */
+    margin-top: 10px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -92,4 +85,11 @@ label {
 
 #botao-reiniciar:hover {
     background-color: #444;
+}
+
+#jogador-atual {
+    padding-top: 5px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffc107;
 }

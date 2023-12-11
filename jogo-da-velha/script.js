@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderizarTabuleiro() {
         containerTabuleiro.innerHTML = '';
 
-        // Atualizei o texto do jogador atual acima da tabela
+        // Adicionando elemento para mostrar o jogador atual acima da tabela
         jogadorAtualDiv.textContent = `Jogador Atual: ${jogadorAtual}`;
 
         containerTabuleiro.style.setProperty('--tamanho-tabuleiro', tamanhoTabuleiro);
