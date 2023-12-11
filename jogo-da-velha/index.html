@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +7,10 @@
     <title>Jogo da Velha</title>
 </head>
 <body>
-    <div class="game-container">
+    <div class="container-jogo">
         <h1>Jogo da Velha</h1>
-        <label for="board-size">Escolha o tamanho do tabuleiro:</label>
-        <select id="board-size">
+        <label for="tamanho-tabuleiro">Escolha o tamanho do tabuleiro:</label>
+        <select id="tamanho-tabuleiro">
             <option value="3">3x3</option>
             <option value="4">4x4</option>
             <option value="5">5x5</option>
@@ -20,8 +20,8 @@
             <option value="9">9x9</option>
             <option value="10">10x10</option>
         </select>
-        <div id="board" class="board"></div>
-        <button id="reset-button">Reiniciar</button>
+        <div id="tabuleiro" class="tabuleiro"></div>
+        <button id="botao-reiniciar">Reiniciar</button>
     </div>
     <script src="script.js"></script>
 </body>
