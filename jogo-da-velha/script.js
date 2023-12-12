@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const containerTabuleiro = document.getElementById('tabuleiro');
     const selectTamanhoTabuleiro = document.getElementById('tamanho-tabuleiro');
+    const selectModoJogo = document.getElementById('modo-jogo');
     const botaoReiniciar = document.getElementById('botao-reiniciar');
     const jogadorAtualDiv = document.getElementById('jogador-atual');
 
     let tamanhoTabuleiro = parseInt(selectTamanhoTabuleiro.value, 10);
+    let modoJogo = parseInt(selectModoJogo.value, 10);
     let jogadorAtual = 'X';
     let tabuleiroJogo = criarTabuleiroVazio(tamanhoTabuleiro);
     let ultimaJogada = { linha: null, coluna: null, jogador: null };
@@ -56,6 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function lidarComCliqueCelula(evento) {
+        if (modoJogo === 1 && jogadorAtual === 'O') {
+            // Não permite que o segundo jogador (controlado pelo código) clique nas células
+            return;
+        }
+
         const linha = parseInt(evento.target.dataset.linha, 10);
         const coluna = parseInt(evento.target.dataset.coluna, 10);
 
@@ -75,6 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
                 atualizarJogadorAtual();
+
+                if (modoJogo === 1 && jogadorAtual === 'O') {
+                    // Se for 1 jogador, e agora é a vez do jogador O (controlado pelo código), faça uma jogada automática
+                    fazerJogadaAutomatica();
+                }
             }
         }
     }
@@ -113,17 +125,59 @@ document.addEventListener('DOMContentLoaded', () => {
         jogadorAtualDiv.textContent = `Jogador Atual: ${jogadorAtual}`;
     }
 
+    function fazerJogadaAutomatica() {
+        // Encontrar uma célula vazia aleatória para a jogada automática
+        const celulasVazias = [];
+        for (let linha = 0; linha < tamanhoTabuleiro; linha++) {
+            for (let coluna = 0; coluna < tamanhoTabuleiro; coluna++) {
+                if (tabuleiroJogo[linha][coluna] === '') {
+                    celulasVazias.push({ linha, coluna });
+                }
+            }
+        }
+
+        // Escolher aleatoriamente uma célula vazia
+        const jogadaAutomatica = celulasVazias[Math.floor(Math.random() * celulasVazias.length)];
+
+        // Fazer a jogada automática após um pequeno atraso
+        setTimeout(() => {
+            tabuleiroJogo[jogadaAutomatica.linha][jogadaAutomatica.coluna] = jogadorAtual;
+            ultimaJogada = { linha: jogadaAutomatica.linha, coluna: jogadaAutomatica.coluna, jogador: jogadorAtual };
+            renderizarTabuleiro();
+
+            if (verificarVencedor(jogadaAutomatica.linha, jogadaAutomatica.coluna)) {
+                setTimeout(() => {
+                    alert(`Temos um vencedor! Última jogada: ${ultimaJogada.jogador} na posição (${ultimaJogada.linha}, ${ultimaJogada.coluna})`);
+                    reiniciarJogo();
+                }, 100);
+            } else if (verificarEmpate()) {
+                alert("O jogo empatou!");
+                reiniciarJogo();
+            } else {
+                jogadorAtual = jogadorAtual === 'X' ? 'O' : 'X';
+                atualizarJogadorAtual();
+            }
+        }, 500);
+    }
+
     function reiniciarJogo() {
         tamanhoTabuleiro = parseInt(selectTamanhoTabuleiro.value, 10);
+        modoJogo = parseInt(selectModoJogo.value, 10);
         tabuleiroJogo = criarTabuleiroVazio(tamanhoTabuleiro);
         jogadorAtual = 'X';
         ultimaJogada = { linha: null, coluna: null, jogador: null };
         renderizarTabuleiro();
         atualizarJogadorAtual();
+
+        if (modoJogo === 1 && jogadorAtual === 'O') {
+            // Se for 1 jogador, e o jogador O (controlado pelo código), faça a primeira jogada automática
+            fazerJogadaAutomatica();
+        }
     }
 
     botaoReiniciar.addEventListener('click', reiniciarJogo);
     selectTamanhoTabuleiro.addEventListener('change', reiniciarJogo);
+    selectModoJogo.addEventListener('change', reiniciarJogo);
 
     renderizarTabuleiro();
 });
